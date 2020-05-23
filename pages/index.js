@@ -57,6 +57,10 @@ export default view(() => {
             padding-bottom: 30px;
           }
         `}</style>
+
+         <select value={results.title}>
+        {results.map((team) => <option key={team.url} value={team.title}>{team.title}</option>)}
+      </select>
         {results.map(it => (
           <div className="row paddedRow" key={it.url}>
             <div className="col-sm-2">
@@ -73,8 +77,9 @@ export default view(() => {
                 <a>Show full details</a>
               </Link>
             </div>
-          </div>
+          </div> 
         ))}
+
       </React.Fragment>
     );
   }
