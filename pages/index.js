@@ -38,10 +38,8 @@ const  refinedResults = [];
 
 export default view(() => {
 	
-//	const [filter, setFilter] = useState(false);
 	const {status, results} = searchStore;
-	//refinedResults = results;
-	
+	const titleArray = results;
 	
 	const counter = store({
 		
@@ -49,16 +47,14 @@ export default view(() => {
 			  console.log("dropvalue "+ event.target.value)
 			  refinedResults.length =0
 			   for (var i = 0; i < results.length; i++) {
-				   if(event.target.value==results[i].title)
+				   if(event.target.value==results[i].entity)
 					     refinedResults.push(results[i]);
 				   }
 			  
 			  count.state = count.state + 1 ;
-			  console.log("count.state "+count.state)
-				   console.log("refinedResults "+ refinedResults)
-				   //this.forceUpdate()
 				   }
 		});
+	
 
   if (status === 'loading') {
 	  count.state=0;
@@ -81,8 +77,8 @@ export default view(() => {
   
   
   if (results && results.length && !count.state) {
-	  console.log("count.state "+count.state);
-	  console.log("results "+refinedResults)
+	  console.log("results "); console.log(results[0]);
+	  
     return wrap(
       <React.Fragment>
         <style jsx>{`
@@ -90,9 +86,10 @@ export default view(() => {
             padding-bottom: 30px;
           }
         `}</style>
-        <select value={results.title} onChange = {(e)=>counter.increment(e)}>
+        
+        <select value={new Set(results.entity)} onChange = {(e)=>counter.increment(e)}>
         {
-        	results.map((team) => <option key={team.url} value={team.title} >{team.title}</option>)
+        	Array.from(new Set(results.map(s=>s.entity))).map((team) => <option value={team} >{team}</option>)
         }
         </select>
         
@@ -131,9 +128,9 @@ if (count.state) {
             padding-bottom: 30px;
           }
         `}</style>
-        <select value={results.title} onChange = {(e)=>counter.increment(e)}>
+        <select value={results.entity} onChange = {(e)=>counter.increment(e)}>
         {
-        	results.map((team) => <option key={team.url} value={team.title} >{team.title}</option>)
+        	results.map((team) => <option key={team.url} value={team.entity} >{team.entity}</option>)
         }
         </select>
         

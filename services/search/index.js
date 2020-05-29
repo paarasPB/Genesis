@@ -49,6 +49,7 @@ app.post('/', async (req, res) => {
     .map(it => ({
       url: it.url,
       title: capitalize(it.label),
+      entity: it.entityType
     }))
     .slice(0, 30);
 
