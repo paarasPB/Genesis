@@ -39,8 +39,12 @@ const  refinedResults = [];
 export default view(() => {
 	
 	const {status, results} = searchStore;
-	const titleArray = results;
-	
+	const titleArray = [].concat(results);
+//	 for (var i = 0; i < results.length; i++) {
+//		  
+//		 titleArray.push(results[i].entity);
+//		   }
+	//const entityArray = JSON.parse(JSON.stringify( results ));
 	const counter = store({
 		
 		  increment: (event) => {
@@ -87,9 +91,10 @@ export default view(() => {
           }
         `}</style>
         
-        <select value={new Set(results.entity)} onChange = {(e)=>counter.increment(e)}>
+        <select value={titleArray.entity} onChange = {(e)=>counter.increment(e)}>
         {
-        	Array.from(new Set(results.map(s=>s.entity))).map((team) => <option value={team} >{team}</option>)
+        	Array.from(new Set(titleArray.map(s=>s.entity))).map((team) => <option value={team} >{team}</option>)
+        	//titleArray.map((team) => <option value={team.entity} >{team.entity}</option>)
         }
         </select>
         
@@ -130,7 +135,8 @@ if (count.state) {
         `}</style>
         <select value={results.entity} onChange = {(e)=>counter.increment(e)}>
         {
-        	results.map((team) => <option key={team.url} value={team.entity} >{team.entity}</option>)
+        	//results.map((team) => <option key={team.url} value={team.entity} >{team.entity}</option>)
+        	Array.from(new Set(titleArray.map(s=>s.entity))).map((team) => <option value={team} >{team}</option>)
         }
         </select>
         
