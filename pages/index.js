@@ -48,7 +48,7 @@ export default view(() => {
 	const counter = store({
 		
 		  increment: (event) => {
-			  console.log("dropvalue "+ event.target.value)
+			  //console.log("dropvalue "+ event.target.value)
 			  refinedResults.length =0
 			   for (var i = 0; i < results.length; i++) {
 				   if(event.target.value==results[i].entity)
@@ -81,7 +81,6 @@ export default view(() => {
   
   
   if (results && results.length && !count.state) {
-	  console.log("results "); console.log(results[0]);
 	  
     return wrap(
       <React.Fragment>
@@ -92,6 +91,7 @@ export default view(() => {
         `}</style>
         
         <select value={titleArray.entity} onChange = {(e)=>counter.increment(e)}>
+        <option value="" disabled selected hidden>Select entity</option>
         {
         	Array.from(new Set(titleArray.map(s=>s.entity))).map((team) => <option value={team} >{team}</option>)
         	//titleArray.map((team) => <option value={team.entity} >{team.entity}</option>)
@@ -125,7 +125,6 @@ export default view(() => {
   
 if (count.state) {
 	  
-	  console.log("filterTrue "+refinedResults )
     return wrap(
       <React.Fragment>
         <style jsx>{`
@@ -134,6 +133,7 @@ if (count.state) {
           }
         `}</style>
         <select value={results.entity} onChange = {(e)=>counter.increment(e)}>
+        <option value="" disabled selected hidden>Select entity</option>
         {
         	//results.map((team) => <option key={team.url} value={team.entity} >{team.entity}</option>)
         	Array.from(new Set(titleArray.map(s=>s.entity))).map((team) => <option value={team} >{team}</option>)

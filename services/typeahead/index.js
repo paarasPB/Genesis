@@ -27,12 +27,14 @@ const app = fastify();
 // serve index page
 app.post('/', async (req, res) => {
   const q = encodeURIComponent(req.body.q || '');
-  if (q.length < 2) {
+  
+  if (q.length < 50) {
     res.send([]);
     return;
   }
-
-  const json = await fetchival(luceneService).get({q});
+  console.log("query"+ q);
+ const json = await fetchival(luceneService).get({q});
+  console.log("typeahead res "+json[0]);
   const resJson = json
     .map(it => ({
       url: it.url,

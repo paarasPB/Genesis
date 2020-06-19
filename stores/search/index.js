@@ -9,11 +9,16 @@ const searchStore = store({
 });
 
 export const getSuggestions = async q => {
+ // console.log("searchAPI "+searchAPI +q)
   searchStore.status = 'loading';
   const results = await fetchival(searchAPI)
     .post({q})
     .catch(e => ({error: e}));
+ // console.log(results);
+  //if(results)
   searchStore.results = results;
+//  else
+//	  typeaheadStore.results = [];  
   searchStore.status = 'done';
 };
 
