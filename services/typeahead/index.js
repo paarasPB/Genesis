@@ -28,7 +28,7 @@ const app = fastify();
 app.post('/', async (req, res) => {
   const q = encodeURIComponent(req.body.q || '');
   
-  if (q.length < 50) {
+  if (q.length < 2 ) {
     res.send([]);
     return;
   }

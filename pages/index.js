@@ -88,8 +88,30 @@ export default view(() => {
           .paddedRow {
             padding-bottom: 30px;
           }
+          select {
+           
+           color:rgb(255, 255, 255);
+           font-weight:400;
+           font-size:15px;
+           padding: 8px;
+           background-color: #2196f3;
+           border: none !important;
+           -webkit-appearance:none;
+           outline: none;
+        }
+        option {
+         background-color:rgb(255, 255, 255);
+         color:rgb(102, 102, 102);
+         -webkit-appearance:none;
+         outline: none;
+        }
+        .selectRow {
+           display: flex !important;
+           justify-content: flex-end;
+           
+        }
         `}</style>
-        
+        <div className="selectRow">
         <select value={titleArray.entity} onChange = {(e)=>counter.increment(e)}>
         <option value="" disabled selected hidden>Select entity</option>
         {
@@ -97,7 +119,7 @@ export default view(() => {
         	//titleArray.map((team) => <option value={team.entity} >{team.entity}</option>)
         }
         </select>
-        
+        </div>
         {
         	
         	results.map(it => (
@@ -131,7 +153,30 @@ if (count.state) {
           .paddedRow {
             padding-bottom: 30px;
           }
+            select {
+           
+           color:rgb(255, 255, 255);
+           font-weight:400;
+           font-size:15px;
+           padding: 8px;
+           background-color: #2196f3;
+           border: none !important;
+           -webkit-appearance:none;
+           outline: none;
+        }
+        option {
+         background-color:rgb(255, 255, 255);
+         color:rgb(102, 102, 102);
+         -webkit-appearance:none;
+         outline: none;
+        }
+        .selectRow {
+           display: flex !important;
+           justify-content: flex-end;
+           
+        }
         `}</style>
+          <div className="selectRow">
         <select value={results.entity} onChange = {(e)=>counter.increment(e)}>
         <option value="" disabled selected hidden>Select entity</option>
         {
@@ -139,7 +184,7 @@ if (count.state) {
         	Array.from(new Set(titleArray.map(s=>s.entity))).map((team) => <option value={team} >{team}</option>)
         }
         </select>
-        
+        </div>
         {
         	
         	refinedResults.map(it => (
