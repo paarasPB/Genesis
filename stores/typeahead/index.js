@@ -10,12 +10,12 @@ const typeaheadStore = store({
 
 export const getSuggestions = async q => {
   typeaheadStore.status = 'loading';
-  console.log("loading typeahead store");
+  //console.log("loading typeahead store");
   const results = await fetchival(typeaheadAPI)
     .post({q})
     .catch(e => ({error: e}));
-  console.log(results);
-  console.log("typeaheadAPI");console.log(typeaheadAPI)
+  //console.log(results);
+  //console.log("typeaheadAPI");console.log(typeaheadAPI)
   //if(results)
   typeaheadStore.results = results;
   //else

@@ -81,12 +81,10 @@ app.post('/', async (req, res) => {
     res.send([]);
     return;
   }
- // console.log("search service");
+
  // console.log(luceneService+" "+q);
   
   const origJson = await fetchival(luceneService).get({q});
-  console.log("origJson");
-  console.log(origJson[0]);
   const json = origJson
     .map(it => ({
       url: it.url,
@@ -94,50 +92,39 @@ app.post('/', async (req, res) => {
       entity: it.entityType
     }))
     .slice(0, 30);
-//  console.log("json");
-//  console.log(json[0]);
+
   
   const body = await timeout(
-    10000, handleQuery()
+    5000, handleQuery()
      );
-  console.log("body")
   console.log(body)
  
   function handleQuery() {
-	  const exists = json.some(v => (v.url.includes("wikidata")));
+	  const exists = json.some(v => (v.url.includes("http://www.wikidata.org")));
 	  if(exists){
-		  console.log("inside wikidata query ");
 //		  console.log("sparqlEndpointWiki"+sparqlEndpointWiki);
 //		  console.log("defaultGraphUriWiki"+defaultGraphUriWiki );
 		  console.log(wikiJsonToQuery(json));
 		  const fullUrl = sparqlEndpointWiki + '?query=' + encodeURIComponent( wikiJsonToQuery(json) );
 		  const headers = { 'Accept': 'application/sparql-results+json' };
 		  const ret =  fetch(fullUrl, { headers } ).then( body => body.json() );
-		  console.log("ret ")
-		  console.log(ret);
-		      return ret;
+		     return ret;
 	  }
 	  else {      
-	      console.log("inside dbpedia query");
-	      console.log("wikiJsonToQuery"+jsonToQuery(json));
-		  const ret = fetchival(sparqlEndpoint).get({
+	      const ret = fetchival(sparqlEndpoint).get({
 		      'default-graph-uri': defaultGraphUri,
 		      query: jsonToQuery(json),
 		    });
-		  console.log("ret ")
-		  console.log(ret);
 		  return ret;
 	  }
   	}
  
   const data = await jsonRdfParser(body);
-//  console.log("data");
-//  console.log(data);
+
   const resultJson = json
     .map(j => {  
     	 const ex = data.filter(d => d.url.value === j.url)[0];
-    	 console.log("ex ")
-    	 console.log(ex)
+
          if (!ex) {
            return undefined;
          }

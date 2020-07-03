@@ -32,9 +32,9 @@ app.post('/', async (req, res) => {
     res.send([]);
     return;
   }
-  console.log("query"+ q);
+  //console.log("query"+ q);
  const json = await fetchival(luceneService).get({q});
-  console.log("typeahead res "+json[0]);
+ // console.log("typeahead res "+json[0]);
   const resJson = json
     .map(it => ({
       url: it.url,

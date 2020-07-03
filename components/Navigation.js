@@ -29,8 +29,7 @@ export default view(
         return;
       }
       if (e.key === 'Enter') {
-        console.log("inside enter");
-    	getSuggestions(e.target.value);
+       getSuggestions(e.target.value);
         this.resetTypeahead();
         Router.push('/');
         return;

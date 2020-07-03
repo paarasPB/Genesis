@@ -6,7 +6,7 @@ const fetch = require('node-fetch');
 const createLogger = require('../../server/logger');
 
 // our packages
-const {sparqlEndpoint, defaultGraphUri} = require('../../config');
+const {sparqlEndpoint, defaultGraphUri, sparqlEndpointWiki} = require('../../config');
 const jsonRdfParser = require('../../util/rdf-json-parser');
 
 // setup fetchival
@@ -26,6 +26,15 @@ const urlToQuery = url => `select ?description ?image where {
     FILTER(langMatches(lang(?description), "EN"))
 } LIMIT 1`;
 
+const urlToWikiQuery = url =>  `select ?description ?image where {
+    <${url}> schema:description ?description .
+    OPTIONAL {
+       <${url}> wdt:P18 ?image .
+    }
+    FILTER(langMatches(lang(?description), "EN"))
+
+}LIMIT 1`;
+
 // serve index page
 app.post('/', async (req, res) => {
   const {url} = req.body;
@@ -36,16 +45,35 @@ app.post('/', async (req, res) => {
 
   logger.debug('generating description for:', url);
 
-  const result = await fetchival(sparqlEndpoint).get({
-    'default-graph-uri': defaultGraphUri,
-    query: urlToQuery(url),
-  });
+  const result = await handleKGQuery(url);
+  
+  function handleKGQuery(uri){
+	    if(uri.includes("http://www.wikidata.org")){
+        			  const sparqlUrl = sparqlEndpointWiki + '?query=' + encodeURIComponent( urlToWikiQuery(uri) );
+					  console.log( urlToWikiQuery(uri));
+        	          const headers = { 'Accept': 'application/sparql-results+json' };
+					  const res =  fetch(sparqlUrl, { headers } ).then( body => body.json() );
+					
+					  return res;
+        }
+        else{
+        	const res = fetchival(sparqlEndpoint).get({
+        	    'default-graph-uri': defaultGraphUri,
+        	    query: urlToQuery(uri),
+        	  });
+        	return res;
+		}
+}
+  
+	  
   const body = await jsonRdfParser(result);
   const description = body
-    .map(it => ({
-      description: it.description.value.replace(/\s\s+/g, ' '),
-      image: it.image ? it.image.value : undefined,
-    }))
+    .map(it => {
+    	return  {
+			      description: it.description.value.replace(/\s\s+/g, ' '),
+			      image: it.image ? it.image.value : undefined,
+    	};
+    })
     .pop();
   res.send({description});
 });
